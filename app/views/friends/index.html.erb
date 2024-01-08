@@ -16,17 +16,20 @@
   </thead>
   <tbody>
     <% @friends.each do |friend| %>
-      <tr>
-        <td><%= friend.first_name %></td>
-        <td><%= friend.last_name %></td>
-        <td><%= friend.email %></td>
-        <td><%= friend.phone %></td>
-        <td><%= friend.twitter %></td>
-        <td><%= friend.user_id %></td>
-        <td><%= link_to 'Show', friend %></td>
-        <td><%= link_to 'Edit', friend %></td>
-        <td><%= link_to 'Destroy', friend_path(friend), method: :delete, data: { confirm: 'Are you sure?' } %></td>>
-      </tr>
+        <!--step 10 with associations, the line below will only show current users friends list -->
+        <% if friend.user == current_user %>
+        <tr>
+          <td><%= friend.first_name %></td>
+          <td><%= friend.last_name %></td>
+          <td><%= friend.email %></td>
+          <td><%= friend.phone %></td>
+          <td><%= friend.twitter %></td>
+          <td><%= friend.user_id %></td>
+          <td><%= link_to 'Show', friend %></td>
+          <td><%= link_to 'Edit', edit_friend_path(friend) %></td>
+          <td><%= link_to 'Destroy', friend_path(friend), method: :delete, data: { confirm: 'Are you sure?' } %></td>>
+        </tr>
+        <% end %>
       <% end %>
   </tbody>
 </table>

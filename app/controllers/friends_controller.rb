@@ -1,8 +1,10 @@
 class FriendsController < ApplicationController
   # before we do anything we need to take an action
   before_action :set_friend, only: %i[ show edit update destroy ]
-  # step 5, associations, we need to authenticate the user
+  # step 5, associations, we need to authenticate the user, will send them to login every time
   before_action :authenticate_user!, except: [:index, :show]
+  # step 7 associations, %i creates an array of option hashes
+  before_action :correct_user, only: %i[ edit update destroy ]
 
   # GET /friends or /friends.json
   def index
@@ -15,7 +17,9 @@ class FriendsController < ApplicationController
 
   # GET /friends/new
   def new
-    @friend = Friend.new
+    #original: @friend = Friend.new
+    # step 8 associations will create friends to only their list
+    @friend = current_user.friends.build
   end
 
   # GET /friends/1/edit
@@ -24,7 +28,9 @@ class FriendsController < ApplicationController
 
   # POST /friends or /friends.json
   def create
-    @friend = Friend.new(friend_params)
+    #original @friend = Friend.new(friend_params)
+    # step 9 associattions will create friends to only their list
+    @friend = current_user.friends.build(friend_params)
 
     respond_to do |format|
       if @friend.save
@@ -59,6 +65,16 @@ class FriendsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  # step 6 with associations
+  def correct_user
+    # correct user is user has_many friends with that id
+    @friend = current_user.friends.find_by(id: params[:id])
+    #if not then we are going to redirect, nil will return if this is the wrong users. 
+    redirect_to friends_path, notice: "Not Authorized to Edit this Friend" if @friend.nil?
+  end
+
+
 
   private
     # Use callbacks to share common setup or constraints between actions.
