@@ -31,9 +31,12 @@
     <%= form.text_field :twitter, class: "form-control", placeholder:"Twitter Handle"  %>
   </div>
 
+<!-- Step 3 of our association after creating and migrating db. This adds our users id and then hides it.
+    Step 4, go to controller.  -->
   <div class = "field form-group mb-3">
     <%= form.number_field :user_id, id: :friend_user_id, class: "form-control", value: current_user.id, type: "hidden"  %>
   </div>
+
 
   <div class = 'actions'>
     <%= form.submit class: 'btn btn-secondary' %>

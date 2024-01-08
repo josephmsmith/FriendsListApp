@@ -1,5 +1,8 @@
 class FriendsController < ApplicationController
+  # before we do anything we need to take an action
   before_action :set_friend, only: %i[ show edit update destroy ]
+  # step 5, associations, we need to authenticate the user
+  before_action :authenticate_user!, except: [:index, :show]
 
   # GET /friends or /friends.json
   def index
@@ -64,6 +67,7 @@ class FriendsController < ApplicationController
     end
 
     # Only allow a list of trusted parameters through.
+    # Step 4 Associations, add user_id to list below on params!
     def friend_params
       params.require(:friend).permit(:first_name, :last_name, :email, :phone, :twitter, :user_id)
     end
